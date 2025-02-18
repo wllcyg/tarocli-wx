@@ -29,7 +29,7 @@ const shadows = {
 // -------------------- 尺寸变量 --------------------
 const sizes = {
   containerWidth: '640px',
-  formWidth: '320px',
+  formWidth: '280px',
   buttonWidth: '200px',
   buttonPadding: '10px'
 };
@@ -87,7 +87,9 @@ export const LoginWrapper = styled.div`
         flex: 1;
         background: ${colors.lightBg};
       }
-
+      .col_md_sign_up{
+        background: #fff;
+      }
       .cont_ba_opcitiy {
         height: 100%;
         display: flex;
