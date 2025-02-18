@@ -95,7 +95,7 @@ export default function Login() {
                             >
                                 <div>
                                     <Input />
-                                    <div style={{ display: 'inline-block',background: '#fff' }}>
+                                    <div style={{ display: 'inline-block',background: 'red' }}>
                                         <img src={imgUrl} alt="验证码" style={{ width: '50px', height: '50px' }} />
                                     </div>
                                 </div>
