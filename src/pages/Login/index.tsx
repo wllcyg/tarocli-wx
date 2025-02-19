@@ -3,31 +3,31 @@ import { useEffect, useState } from 'react'
 import classNames from 'classnames'
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import { Button, Form, Input } from 'antd'
-import { useAxios } from '@/utils/reqest'
-import { unescape } from 'querystring'
+import useRequest from '@/hooks/useRequest'
 interface captchaRes {
     captchaId: number
     data: string
 }
 export default function Login() {
     const [imgUrl, setImgUrl] = useState('')
+    const { data, run } = useRequest('/admin/base/open/captcha')
     const [loginForm, setLoginForm] = useState({
         username: '',
         password: '',
         captcha: ''
     })
-    // 验证码
-    const { data } = useAxios<captchaRes>('/app/user/login/captcha');
+    // 验证码及刷新验证码
     useEffect(() => {
         if (data?.data) {
             const encoded = encodeURIComponent(data.data)
-            .replace(/%([0-9A-F]{2})/g, (_, hex) => 
-              String.fromCharCode(parseInt(hex, 16))
-            );
-          const base64 = btoa(encoded);
-          setImgUrl(`data:image/svg+xml;base64,${base64}`);
+                .replace(/%([0-9A-F]{2})/g, (_, hex) =>
+                    String.fromCharCode(parseInt(hex, 16))
+                );
+            const base64 = btoa(encoded);
+            setImgUrl(`data:image/svg+xml;base64,${base64}`);
         }
     }, [data]);
+
     const [isShowLogin, setIsShowLogin] = useState(false)
     // 卡片位置
     const [position, setPosition] = useState<string>('left')
@@ -39,6 +39,7 @@ export default function Login() {
     }
     // 登录按钮
     const handleLogin = () => {
+        run()
         setIsShowLogin(true)
         setPosition('left')
     }
@@ -46,6 +47,7 @@ export default function Login() {
     const handleClose = () => {
         setIsShowLogin(false)
     }
+
     return (
         <LoginWrapper >
             <div className='cont_login'>
@@ -75,28 +77,25 @@ export default function Login() {
                             <Form.Item
                                 label="账号"
                                 name="username"
-                                rules={[{ required: true, message: '请填写账号!' }]}
                             >
-                                <Input />
+                                <Input size='large' />
                             </Form.Item>
                             <Form.Item
                                 label="密码"
                                 name="password"
-                                rules={[{ required: true, message: '请填写密码!' }]}
                             >
-                                <Input.Password />
+                                <Input.Password size='large' />
                             </Form.Item>
                             <Form.Item
                                 label="验证码"
                                 name="captcha"
-                                wrapperCol={{ span: 18 }}
-                                labelCol={{ span: 6 }}
-                                rules={[{ required: true, message: '请填写验证码!' }]}
+                                wrapperCol={{ span: 19 }}
+                                labelCol={{ span: 5 }}
                             >
-                                <div>
-                                    <Input />
-                                    <div style={{ display: 'inline-block',background: 'red' }}>
-                                        <img src={imgUrl} alt="验证码" style={{ width: '50px', height: '50px' }} />
+                                <div className='captcha-wraper'>
+                                    <Input size='large' />
+                                    <div className='captcha-img-box'>
+                                        <img onClick={run} src={imgUrl} alt="验证码" style={{ width: '100px', height: '30px' }} />
                                     </div>
                                 </div>
                             </Form.Item>

@@ -130,6 +130,16 @@ export const LoginWrapper = styled.div`
       h2{
         text-align:center;
       }
+      .captcha-wraper{
+         position: relative;
+         .captcha-img-box{
+           position: absolute;
+           background: rgba(0,0,0,0.3);
+           right: 2px;
+           top: 2px;
+           border-radius: 4px;
+         }
+      }
     }
 
     .show_login_form {
